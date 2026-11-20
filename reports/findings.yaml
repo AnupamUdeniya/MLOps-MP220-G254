@@ -1,0 +1,62 @@
+﻿group_id: "G254"
+problem_id: "MP220"
+
+data_issues:
+  leaking_column:
+    present: false
+    column: null
+
+  unit_mixup:
+    present: true
+    column: "panel_area_m2"
+    group_value: "Old City"
+    factor: 10000
+
+  sentinel_value:
+    present: true
+    column: "sunshine_hours"
+    value: -999
+    count: 39
+
+  duplicate_rows:
+    present: false
+    count: null
+
+  stuck_sensor:
+    present: true
+    column: "cloud_cover_pct"
+    start_date: "2026-03-05"
+    end_date: "2026-03-20"
+
+  target_typos:
+    present: true
+    count: 10
+
+  spelling_variants:
+    present: false
+    column: null
+    true_levels: null
+
+tracking:
+  experiment_name: null
+  best_run_id: null
+  registered_model_name: null
+  champion_version: null
+
+monitoring:
+  psi:
+    panel_area_m2: null
+    sunshine_hours: null
+    temp_c: null
+    dust_days: null
+    panel_age_yr: null
+    cloud_cover_pct: null
+  most_drifted_feature: null
+  mae_by_group:
+    'Old City': null
+    'New Colony': null
+    'Industrial': null
+  worst_served_group: null
+  mae_v1_on_check: null
+  mae_v2_on_check: null
+  decision: null
