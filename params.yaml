@@ -1,0 +1,63 @@
+
+data:
+  train_path: data/raw/train.csv
+  later_path: data/raw/later.csv
+  holdout_path: data/raw/holdout_features.csv
+
+  target: energy_kwh
+
+features:
+  numeric:
+    - panel_area_m2
+    - sunshine_hours
+    - temp_c
+    - dust_days
+    - panel_age_yr
+    - cloud_cover_pct
+
+  categorical:
+    - roof_type
+    - area
+
+training:
+  test_size: 0.20
+  random_state: 42
+
+models:
+  - name: ridge_alpha_1
+    type: ridge
+    params:
+      alpha: 1.0
+
+  - name: random_forest_150
+    type: random_forest
+    params:
+      n_estimators: 150
+      max_depth: 8
+      min_samples_leaf: 2
+      random_state: 42
+
+  - name: random_forest_250
+    type: random_forest
+    params:
+      n_estimators: 250
+      max_depth: null
+      min_samples_leaf: 2
+      random_state: 42
+
+  - name: gradient_boosting_150
+    type: gradient_boosting
+    params:
+      n_estimators: 150
+      learning_rate: 0.05
+      max_depth: 2
+      random_state: 42
+
+mlflow:
+  tracking_uri: sqlite:///mlflow.db
+  experiment_name: mp220_solar_prediction
+  registered_model_name: mp220_solar_model
+
+output:
+  model_path: models/model.joblib
+  predictions_path: predictions/holdout_predictions.csv
