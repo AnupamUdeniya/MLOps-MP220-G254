@@ -1,0 +1,40 @@
+artifact_path: file:///C:/Users/Naman/Desktop/MLOPS PROJECT/repo-clean/mlruns/1/models/m-5cc73322ec5f426db74ba00c058f1d6a/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.11.9
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.5.2
+    skops_trusted_types: null
+is_signature_from_type_hint: false
+mlflow_version: 3.16.1
+model_id: m-5cc73322ec5f426db74ba00c058f1d6a
+model_size_bytes: 3932
+model_uuid: m-5cc73322ec5f426db74ba00c058f1d6a
+prompts: null
+run_id: b98db1cd11d34d8788823c8344e9a2dc
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: split
+  serving_input_path: serving_input_example.json
+  type: dataframe
+signature:
+  inputs: '[{"type": "double", "name": "panel_area_m2", "required": true}, {"type":
+    "double", "name": "sunshine_hours", "required": true}, {"type": "double", "name":
+    "temp_c", "required": true}, {"type": "long", "name": "dust_days", "required":
+    true}, {"type": "double", "name": "panel_age_yr", "required": true}, {"type":
+    "long", "name": "cloud_cover_pct", "required": true}, {"type": "string", "name":
+    "roof_type", "required": true}, {"type": "string", "name": "area", "required":
+    true}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float64", "shape": [-1]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2026-11-24 10:57:42.745899'
