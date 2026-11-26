@@ -1,6 +1,6 @@
 import pandas as pd
 import pytest
-from src.data_cleaning import clean_data
+from src.data_cleaning import clean_data, validate_cleaned_data
 
 
 @pytest.fixture
@@ -37,3 +37,14 @@ def test_clean_target_typo(sample_dirty_data):
     cleaned = clean_data(sample_dirty_data)
     # 250.0 should be divided by 10.0 -> 25.0
     assert cleaned.loc[0, "energy_kwh"] == pytest.approx(25.0, 0.01)
+
+
+def test_clean_does_not_mutate_input(sample_dirty_data):
+    original_area = sample_dirty_data.loc[0, "panel_area_m2"]
+    _ = clean_data(sample_dirty_data)
+    assert sample_dirty_data.loc[0, "panel_area_m2"] == original_area
+
+
+def test_validate_cleaned_data_passes(sample_dirty_data):
+    cleaned = clean_data(sample_dirty_data)
+    assert validate_cleaned_data(cleaned) is True
