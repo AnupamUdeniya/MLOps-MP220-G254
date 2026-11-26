@@ -9,6 +9,20 @@
 - S24CSEU0392 - SANCHAY JAIN
 - S24CSEU0360 - NAMAN SHARMA
 
+## Data Quality & Cleaning (Data Lead)
+
+Run the automated data audit and cleaning checks:
+
+1. Check all seven data issue categories: `python src/data_checks.py`
+2. Verify the cleaning pipeline: `python src/data_cleaning.py`
+3. Run data cleaning unit tests: `pytest tests/test_cleaning.py`
+
+Summary of findings in `data/raw/train.csv` (recorded in `reports/findings.yaml`):
+- **Unit mixup:** `panel_area_m2` in `Old City` recorded in $\text{cm}^2$ (factor `10000`)
+- **Sentinel value:** `sunshine_hours == -999` across `39` rows
+- **Stuck sensor:** `cloud_cover_pct` stuck at `48` from `2026-03-05` to `2026-03-20`
+- **Target typos:** `10` rows in `energy_kwh` typed 10x too large
+
 ## MLflow Experiment Tracking
 
 The repository includes an MLflow experiment database and five logged model artifacts.
