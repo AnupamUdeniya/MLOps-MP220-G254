@@ -1,6 +1,12 @@
 import pandas as pd
 import pytest
 from src.data_cleaning import clean_data, validate_cleaned_data
+from src.data_checks import (
+    check_leaking_column,
+    check_sentinel_value,
+    check_target_typos,
+    check_unit_mixup,
+)
 
 
 @pytest.fixture
@@ -16,7 +22,7 @@ def sample_dirty_data():
         "cloud_cover_pct": [20, 40, 50],
         "roof_type": ["flat", "tin", "sloped"],
         "area": ["Old City", "Industrial", "New Colony"],
-        "energy_kwh": [250.0, 25.0, 30.0]
+        "energy_kwh": [250.0, 25.0, 30.0],
     })
 
 
@@ -48,3 +54,22 @@ def test_clean_does_not_mutate_input(sample_dirty_data):
 def test_validate_cleaned_data_passes(sample_dirty_data):
     cleaned = clean_data(sample_dirty_data)
     assert validate_cleaned_data(cleaned) is True
+
+
+def test_clean_drops_duplicates(sample_dirty_data):
+    with_dup = pd.concat([sample_dirty_data, sample_dirty_data.iloc[[0]]], ignore_index=True)
+    cleaned = clean_data(with_dup)
+    assert len(cleaned) == 3
+
+
+def test_validate_cleaned_data_rejects_dirty(sample_dirty_data):
+    with pytest.raises(ValueError):
+        validate_cleaned_data(sample_dirty_data)
+
+
+def test_data_checks_detect_anomalies(sample_dirty_data):
+    holdout = sample_dirty_data.drop(columns=["energy_kwh"])
+    assert check_leaking_column(sample_dirty_data, holdout)["present"] is False
+    assert check_unit_mixup(sample_dirty_data)["group_value"] == "Old City"
+    assert check_sentinel_value(sample_dirty_data)["value"] == -999
+    assert check_target_typos(sample_dirty_data)["count"] == 1
