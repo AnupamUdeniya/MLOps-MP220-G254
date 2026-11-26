@@ -27,6 +27,20 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
         
     return cleaned
 
+
+def validate_cleaned_data(df: pd.DataFrame) -> bool:
+    """Verify that known data anomalies have been removed after cleaning."""
+    if "sunshine_hours" in df.columns and (df["sunshine_hours"] == -999).any():
+        raise ValueError("Sentinel value -999 still present in sunshine_hours.")
+    if "area" in df.columns and "panel_area_m2" in df.columns:
+        bad_area = (df["area"] == "Old City") & (df["panel_area_m2"] > 1000)
+        if bad_area.any():
+            raise ValueError("Unconverted panel_area_m2 values remain for Old City.")
+    if "energy_kwh" in df.columns and (df["energy_kwh"] > 100).any():
+        raise ValueError("Uncorrected target typos (>100 kWh) remain in energy_kwh.")
+    return True
+
+
 if __name__ == "__main__":
     df = pd.read_csv("data/raw/train.csv")
     cleaned_df = clean_data(df)
